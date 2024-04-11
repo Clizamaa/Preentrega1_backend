@@ -60,9 +60,9 @@ app.post('/api/products', (req, res) => {
     }
 
     const { title, description, code, price, stock, category, thumbnails } = req.body;
-    if (!title || !description || !code || !price || !stock || !category) {
-        return res.status(400).json({ error: 'Faltan datos obligatorios' });
-    }
+    // if (!title || !description || !code || !price || !stock || !category) {
+    //     return res.status(400).json({ error: 'Faltan datos obligatorios' });
+    // }
 
     const productoExistente = productos.find(producto => producto.code === code);
     if (productoExistente) {
