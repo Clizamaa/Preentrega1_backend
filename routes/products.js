@@ -55,7 +55,7 @@ router.get('/:pid', (req, res) => {
 
 router.post('/', (req, res) => {
     const productos = readData();
-    const {title} = req.body;
+    const {title, description, code} = req.body;
     console.log(req.body.title);
     // res.json(productos);
 
