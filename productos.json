@@ -1,16 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Nombre del producto 1",
-    "description": "Descripción del producto 1",
-    "code": "Código del producto 1",
-    "price": 100,
-    "stock": 50,
-    "category": "Categoría del producto",
-    "thumbnails": "URL de la imagen del producto",
-    "status": false
-  },
-  {
     "id": 2,
     "title": "producto 2",
     "description": "Descripción 2",
@@ -20,5 +9,27 @@
     "category": "Categoría del producto",
     "thumbnails": "URL de la imagen del producto",
     "status": true
+  },
+  {
+    "id": 3,
+    "title": "Nombre del producto 3",
+    "description": "Descripción del producto 3",
+    "code": "Código del producto 3",
+    "price": 100,
+    "stock": 50,
+    "category": "Categoría del producto",
+    "thumbnails": "URL de la imagen del producto",
+    "status": false
+  },
+  {
+    "id": 4,
+    "title": "Nombre del producto 4",
+    "description": "Descripción del producto 4",
+    "code": "Código del producto 4",
+    "price": 900,
+    "stock": 50,
+    "category": "Categoría del producto",
+    "thumbnails": "URL de la imagen del producto",
+    "status": false
   }
 ]
