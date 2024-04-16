@@ -55,89 +55,81 @@ router.get('/:pid', (req, res) => {
 
 router.post('/', (req, res) => {
     const productos = readData();
-    const {title, description, code} = req.body;
-    console.log(req.body.title);
-    // res.json(productos);
+    const {title, description, code, price, stock, category, thumbnails, status } = req.body;
+    if (!title || !description || !code || !price || !stock || !category || status === undefined) {
+        return res.status(400).json({ error: 'Faltan datos obligatorios ' });
+    }
 
+    const productoExistente = productos.find(producto => producto.code === code);
+    if (productoExistente) {
+        return res.status(400).json({ error: 'Ya existe un producto con el mismo código' });
+    }
 
+    const newProduct = {
+        id: productos.length + 1,
+        title,
+        description,
+        code,
+        price,
+        stock,
+        category,
+        thumbnails,
+        status: Boolean(status),
+    };
+    console.log(newProduct);
+    productos.push(newProduct);
+    writeData(productos);
+    res.json({message: 'Producto agregado'});
 });
 
-// router.put('/:pid', (req, res) => {
-//     let productos = [];
-//     try {
-//         const data = fs.readFileSync(filePath);
-//         productos = JSON.parse(data);
-//     } catch (error) {
-//         if (error.code === 'ENOENT') {
-//             console.log('No se encontró el archivo de productos');
-//         } else {
-//             console.log('Error al cargar productos:', error.message);
-//         }
-//     }
+ router.put('/:pid', (req, res) => {
+    const productos = readData();
+    const pid = Number(req.params.pid);
+    const { title, description, code, price, stock, category, thumbnails, status } = req.body;
+    const productoIndex = productos.findIndex(producto => producto.id === pid);
+    if (productoIndex === -1) {
+        return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+    const producto = productos[productoIndex];
+    if (title) {
+        producto.title = title;
+    }
+    if (description) {
+        producto.description = description;
+    }
+    if (code) {
+        producto.code = code;
+    }
+    if (price) {
+        producto.price = price;
+    }
+    if (stock) {
+        producto.stock = stock;
+    }
+    if (category) {
+        producto.category = category;
+    }
+    if (thumbnails) {
+        producto.thumbnails = thumbnails;
+    }
+    if (status !== undefined) {
+        producto.status = Boolean(status);
+    }
+    writeData(productos);
+    res.json( {message: 'Producto actualizado'});
+ }),
 
-//     const producto = productos.find(producto => producto.id === Number(req.params.id));
-//     if (!producto) {
-//         return res.status(404).json({ error: 'Producto no encontrado' });
-//     }
-
-//     const { title, description, code, price, stock, category, thumbnails } = req.body;
-
-//     if (!title || !description || !code || !price || !stock || !category) {
-//         return res.status(400).json({ error: 'Faltan datos obligatorios' });
-//     }
-
-//     const productoExistente = productos.find(producto => producto.code === code && producto.id !== Number(req.params.id));
-//     if (productoExistente) {
-//         return res.status(400).json({ error: 'Ya existe un producto con el mismo código' });
-//     }
-
-//     producto.title = title;
-//     producto.description = description;
-//     producto.code = code;
-//     producto.price = price;
-//     producto.stock = stock;
-//     producto.category = category;
-//     producto.thumbnails = thumbnails;
-
-//     try {
-//         fs.writeFileSync(filePath, JSON.stringify(productos, null, 2));
-//         res.json(producto);
-//     } catch (error) {
-//         console.log('Error al guardar productos:', error.message);
-//         res.status(500).json({ error: 'Error interno' });
-//     }
-
-// }),
-
-// router.delete('/:pid', (req, res) => {
-//     let productos = [];
-//     try {
-//         const data = fs.readFileSync(filePath);
-//         productos = JSON.parse(data);
-//     } catch (error) {
-//         if (error.code === 'ENOENT') {
-//             console.log('No se encontró el archivo de productos');
-//         } else {
-//             console.log('Error al cargar productos:', error.message);
-//         }
-//     }
-
-//     const productoIndex = productos.findIndex(producto => producto.id === Number(req.params.id));
-//     if (productoIndex === -1) {
-//         return res.status(404).json({ error: 'Producto no encontrado' });
-//     }
-
-//     const producto = productos[productoIndex];
-//     productos.splice(productoIndex, 1);
-
-//     try {
-//         fs.writeFileSync(filePath, JSON.stringify(productos, null, 2));
-//         res.json(producto);
-//     } catch (error) {
-//         console.log('Error al guardar productos:', error.message);
-//         res.status(500).json({ error: 'Error interno' });
-//     }
-// }),
+router.delete('/:pid', (req, res) => {
+    const productos = readData();
+    const pid = Number(req.params.pid);
+    const productoIndex = productos.findIndex(producto => producto.id === pid);
+    if (productoIndex === -1) {
+        return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+    productos.splice(productoIndex, 1);
+    writeData(productos);
+    res.json({message: 'Producto eliminado' });
+}),
 
 module.exports = router;
 
