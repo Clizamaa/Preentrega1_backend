@@ -53,7 +53,15 @@ router.get('/:cid', (req, res) => {
 });
 
 router.post('/:cid/product/:pid', (req, res) => {
-    // la ruta POST /carts/:cid/product/:pid debe agregar un producto al carrito con id :cid
+    // la ruta POST /carts/:cid/product/:pid deberá agregar el producto al arreglo "products" del carrito correspondiente, agregando como un objeto bajo el siguiente formato: - product: SOLO DEBE CONTENER EL ID DEL PRODUCTO , quantity: debe contener el numero de ejemplares de dicho producto. El producto, de momento, se agregará de uno en uno. Si el producto ya existe en el carrito, se incrementará la cantidad.
+    
+    const carts = readData();
+    const cart = carts.find(cart => cart.id === Number(req.params.cid));
+    if (!cart) {
+        return res.status(404).json({ error: 'Carrito no encontrado👀' });
+    }
+    const productId = Number(req.params.pid);
+    
 });
 
 module.exports = router;
